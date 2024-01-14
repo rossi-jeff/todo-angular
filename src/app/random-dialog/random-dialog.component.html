@@ -1,0 +1,21 @@
+<div class="dialog" id="random-dialog">
+  <div class="dialog-header">
+    <h3>Random Sign In</h3>
+  </div>
+  <div class="dialog-content">
+    <form [formGroup]="randomForm">
+      <div class="field">
+        <select name="UserName" formControlName="UserName">
+          <option value="">- Select -</option>
+          @for (name of userNames; track name) {
+          <option [value]="name">{{ name }}</option>
+          }
+        </select>
+      </div>
+    </form>
+  </div>
+  <div class="dialog-buttons">
+    <button (click)="cancelClicked()">Cancel</button>
+    <button (click)="signInClicked()">Sign In</button>
+  </div>
+</div>

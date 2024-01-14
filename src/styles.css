@@ -1,1 +1,69 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+a {
+  @apply text-blue-500 font-bold;
+}
+
+a:hover {
+  @apply underline;
+}
+
+h1 {
+  @apply text-2xl font-bold;
+}
+
+h2 {
+  @apply text-xl font-bold;
+}
+
+h3 {
+  @apply text-lg font-bold;
+}
+
+button {
+  @apply text-sm py-1 px-2 border border-black rounded;
+}
+
+button:hover {
+  @apply bg-slate-200;
+}
+
+.modal-overlay {
+  @apply fixed inset-0 bg-gray-500 bg-opacity-70 overflow-y-auto w-full h-full z-30 hidden;
+}
+
+.dialog {
+  @apply relative mx-auto top-20 w-72 bg-white border border-black rounded p-2 hidden;
+}
+
+.open {
+  @apply block;
+}
+
+.dialog-header {
+  @apply bg-black text-white px-2 py-1 rounded;
+}
+
+.dialog-content {
+  @apply py-2;
+}
+
+.field {
+  @apply py-1;
+}
+
+label {
+  @apply font-bold;
+}
+
+input,
+select,
+textarea {
+  @apply text-sm px-2 py-1 bg-white text-black border border-black rounded w-full;
+}
+
+.dialog-buttons {
+  @apply flex justify-between;
+}

@@ -1,0 +1,26 @@
+<div class="m-0 p-2 flex flex-col max-h-screen h-screen">
+  <app-top-bar
+    (register)="showRegister()"
+    (signIn)="showSignIn()"
+    (random)="showRandom()"
+  ></app-top-bar>
+  <div class="flex-grow overflow-y-auto">
+    <div class="modal-overlay" id="modal-overlay">
+      <app-register-dialog
+        (cancel)="hideRegister()"
+        (register)="register($event)"
+      ></app-register-dialog>
+      <app-sign-in-dialog
+        (cancel)="hideSignIn()"
+        (signIn)="signIn($event)"
+      ></app-sign-in-dialog>
+      <app-random-dialog
+        (cancel)="hideRandom()"
+        (signIn)="randomSignIn($event)"
+        [userNames]="userNames"
+      ></app-random-dialog>
+    </div>
+    Home Content
+  </div>
+  <app-bottom-bar></app-bottom-bar>
+</div>
