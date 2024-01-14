@@ -17,15 +17,15 @@ export class SessionStorage {
   }
 
   private retrieveData() {
-    if (sessionStorage) {
-      const stored = sessionStorage.getItem(this._key);
+    if (window && window.sessionStorage) {
+      const stored = window.sessionStorage.getItem(this._key);
       this._data = stored ? JSON.parse(stored) : blankSession;
     } else this._data = blankSession;
   }
 
   private storeData() {
-    if (sessionStorage) {
-      sessionStorage.setItem(this._key, JSON.stringify(this._data));
+    if (window && window.sessionStorage) {
+      window.sessionStorage.setItem(this._key, JSON.stringify(this._data));
     }
   }
 }
