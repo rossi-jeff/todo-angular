@@ -12,6 +12,9 @@ import { SignInDialogComponent } from '../sign-in-dialog/sign-in-dialog.componen
 import { SignInForm } from '../../types/sign-in-form.type';
 import { RandomDialogComponent } from '../random-dialog/random-dialog.component';
 import { RandomForm } from '../../types/random-form.type';
+import { ResponseLogin } from '../../types/response-login.type';
+import { randomUser } from '../../lib/random-user';
+import { SessionData, blankSession } from '../../types/session-data.type';
 
 @Component({
   selector: 'app-home',
@@ -31,7 +34,7 @@ export class HomeComponent implements OnInit {
   users: User[] = [];
   userNames: string[] = [];
   currentUser: User | null = null;
-  session: SessionStorage = new SessionStorage();
+  session: SessionData = blankSession;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -77,8 +80,16 @@ export class HomeComponent implements OnInit {
   };
 
   register = (event: RegisterForm) => {
-    console.log(event);
-    this.hideRegister();
+    const { UserName, PassWord, Email } = event;
+    if (!UserName || !PassWord) return;
+    this.api
+      .post({
+        path: 'auth/register',
+        body: { UserName, PassWord, Email },
+      })
+      .subscribe(() => {
+        this.hideRegister();
+      });
   };
 
   showSignIn = () => {
@@ -90,7 +101,22 @@ export class HomeComponent implements OnInit {
   };
 
   signIn = (event: SignInForm) => {
-    console.log(event);
+    const { UserName, PassWord } = event;
+    if (!UserName || !PassWord) return;
+    this.api
+      .post({ path: 'auth/login', body: { UserName, PassWord } })
+      .subscribe((result: any) => {
+        const data: ResponseLogin = result;
+        const { Token } = data;
+        if (isPlatformBrowser(this.platformId)) {
+          const s = new SessionStorage();
+          s.data = { UserName, Token, SignedIn: true };
+          this.session = s.data;
+        }
+        this.loadCurrentUser();
+        this.loadTodos();
+        this.hideSignIn();
+      });
   };
 
   showRandom = () => {
@@ -102,15 +128,39 @@ export class HomeComponent implements OnInit {
   };
 
   randomSignIn = (event: RandomForm) => {
-    console.log(event);
-    this.hideRandom();
+    const { UserName } = event;
+    if (!UserName) return;
+    this.api
+      .post({ path: 'auth/login', body: { UserName, PassWord: randomUser } })
+      .subscribe((result: any) => {
+        const data: ResponseLogin = result;
+        const { Token } = data;
+        if (isPlatformBrowser(this.platformId)) {
+          const s = new SessionStorage();
+          s.data = { UserName, Token, SignedIn: true };
+          this.session = s.data;
+        }
+        this.loadCurrentUser();
+        this.loadTodos();
+        this.hideRandom();
+      });
+  };
+
+  signOut = () => {
+    if (isPlatformBrowser(this.platformId)) {
+      const s = new SessionStorage();
+      s.data = blankSession;
+      this.session = s.data;
+      this.currentUser = null;
+      this.todos = [];
+    }
   };
 
   loadCurrentUser = () => {
     this.api
       .get({
         path: 'user/current',
-        token: this.session.data.Token || undefined,
+        token: this.session.Token || undefined,
       })
       .subscribe((result: any) => (this.currentUser = result));
   };
@@ -127,7 +177,7 @@ export class HomeComponent implements OnInit {
 
   loadTodos = () => {
     this.api
-      .get({ path: 'todo', token: this.session.data.Token || undefined })
+      .get({ path: 'todo', token: this.session.Token || undefined })
       .subscribe((result: any) => (this.todos = result));
   };
 

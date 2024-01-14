@@ -1,8 +1,13 @@
 <div class="flex justify-between">
   <h1>ToDo App</h1>
   <div class="flex">
+    @if (session.SignedIn) {
+    <div class="font-bold mr-2">{{ session.UserName }}</div>
+    <button (click)="signOutClicked()">Sign Out</button>
+    } @else {
     <button (click)="registerClicked()">Register</button>
     <button class="mx-2" (click)="signInClicked()">Sign In</button>
     <button (click)="randomClicked()">Random</button>
+    }
   </div>
 </div>
