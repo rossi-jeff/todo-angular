@@ -17,6 +17,8 @@ import { randomUser } from '../../lib/random-user';
 import { SessionData, blankSession } from '../../types/session-data.type';
 import { TodoCardComponent } from '../todo-card/todo-card.component';
 import { TodoForm } from '../../types/todo-form.type';
+import { NewTodoDialogComponent } from '../new-todo-dialog/new-todo-dialog.component';
+import { NewTodoForm } from '../../types/new-todo-form.type';
 
 @Component({
   selector: 'app-home',
@@ -28,6 +30,7 @@ import { TodoForm } from '../../types/todo-form.type';
     SignInDialogComponent,
     RandomDialogComponent,
     TodoCardComponent,
+    NewTodoDialogComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -177,6 +180,29 @@ export class HomeComponent implements OnInit {
     this.api
       .delete({ path: `todo/${Id}`, token: this.session.Token || '' })
       .subscribe(() => this.loadTodos());
+  };
+
+  showNew = () => {
+    this.showDialog('new-todo-dialog');
+  };
+
+  hideNew = () => {
+    this.hideDialog('new-todo-dialog');
+  };
+
+  addTodo = (event: NewTodoForm) => {
+    const { Task, Completed } = event;
+    if (!Task || Completed == undefined || Completed == null) return;
+    this.api
+      .post({
+        path: 'todo',
+        body: { Task, Completed },
+        token: this.session.Token || '',
+      })
+      .subscribe(() => {
+        this.hideNew();
+        this.loadTodos();
+      });
   };
 
   loadCurrentUser = () => {
