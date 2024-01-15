@@ -21,8 +21,19 @@
         (signIn)="randomSignIn($event)"
         [userNames]="userNames"
       ></app-random-dialog>
+      <app-new-todo-dialog
+        (cancel)="hideNew()"
+        (addTodo)="addTodo($event)"
+      ></app-new-todo-dialog>
     </div>
-    Home Content
+    <button class="my-2" (click)="showNew()">Add ToDo</button>
+    @for (todo of todos; track todo.Id) {
+    <app-todo-card
+      [todo]="todo"
+      (deleteTodo)="deleteTodo($event)"
+      (updateTodo)="updateTodo($event)"
+    ></app-todo-card>
+    }
   </div>
   <app-bottom-bar></app-bottom-bar>
 </div>

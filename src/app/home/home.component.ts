@@ -15,6 +15,10 @@ import { RandomForm } from '../../types/random-form.type';
 import { ResponseLogin } from '../../types/response-login.type';
 import { randomUser } from '../../lib/random-user';
 import { SessionData, blankSession } from '../../types/session-data.type';
+import { TodoCardComponent } from '../todo-card/todo-card.component';
+import { TodoForm } from '../../types/todo-form.type';
+import { NewTodoDialogComponent } from '../new-todo-dialog/new-todo-dialog.component';
+import { NewTodoForm } from '../../types/new-todo-form.type';
 
 @Component({
   selector: 'app-home',
@@ -25,6 +29,8 @@ import { SessionData, blankSession } from '../../types/session-data.type';
     RegisterDialogComponent,
     SignInDialogComponent,
     RandomDialogComponent,
+    TodoCardComponent,
+    NewTodoDialogComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -154,6 +160,49 @@ export class HomeComponent implements OnInit {
       this.currentUser = null;
       this.todos = [];
     }
+  };
+
+  updateTodo = (event: TodoForm) => {
+    const { Id, Task, Completed } = event;
+    if (!Id || !Task || Completed == undefined || Completed == null) return;
+    this.api
+      .patch({
+        path: `todo/${Id}`,
+        body: { Task, Completed },
+        token: this.session.Token || '',
+      })
+      .subscribe(() => this.loadTodos());
+  };
+
+  deleteTodo = (event: { Id?: string | null }) => {
+    const { Id } = event;
+    if (!Id) return;
+    this.api
+      .delete({ path: `todo/${Id}`, token: this.session.Token || '' })
+      .subscribe(() => this.loadTodos());
+  };
+
+  showNew = () => {
+    this.showDialog('new-todo-dialog');
+  };
+
+  hideNew = () => {
+    this.hideDialog('new-todo-dialog');
+  };
+
+  addTodo = (event: NewTodoForm) => {
+    const { Task, Completed } = event;
+    if (!Task || Completed == undefined || Completed == null) return;
+    this.api
+      .post({
+        path: 'todo',
+        body: { Task, Completed },
+        token: this.session.Token || '',
+      })
+      .subscribe(() => {
+        this.hideNew();
+        this.loadTodos();
+      });
   };
 
   loadCurrentUser = () => {

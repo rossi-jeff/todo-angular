@@ -1,0 +1,31 @@
+<div class="dialog" id="new-todo-dialog">
+  <div class="dialog-header">
+    <h3>Add a ToDo</h3>
+  </div>
+  <div class="dialog-content">
+    <form [formGroup]="newTodoForm">
+      <div class="field">
+        <label for="Task">Task</label>
+        <textarea name="Task" formControlName="Task"></textarea>
+      </div>
+      <div class="field">
+        <div class="flex">
+          <div class="mr-2">
+            <input
+              type="checkbox"
+              name="Completed"
+              formControlName="Completed"
+            />
+          </div>
+          <div>
+            <label for="Completed">Completed</label>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="dialog-buttons">
+    <button (click)="cancelClicked()">Cancel</button>
+    <button (click)="saveClicked()">Save</button>
+  </div>
+</div>
