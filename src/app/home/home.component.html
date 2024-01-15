@@ -24,7 +24,11 @@
     </div>
     <button class="my-2">Add ToDo</button>
     @for (todo of todos; track todo.Id) {
-    <app-todo-card [todo]="todo"></app-todo-card>
+    <app-todo-card
+      [todo]="todo"
+      (deleteTodo)="deleteTodo($event)"
+      (updateTodo)="updateTodo($event)"
+    ></app-todo-card>
     }
   </div>
   <app-bottom-bar></app-bottom-bar>

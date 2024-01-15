@@ -2,15 +2,20 @@
   <form [formGroup]="todoForm">
     <div class="flex mb-2">
       <div class="mr-2">
-        <input type="checkbox" name="Completed" formControlName="Completed" />
+        <input
+          type="checkbox"
+          name="Completed"
+          formControlName="Completed"
+          (change)="completedChanged()"
+        />
       </div>
       <div class="flex-grow">
         @if (editing()) {
         <div>
           <textarea name="Task" formControlName="Task"></textarea>
           <div class="dialog-buttons">
-            <button (click)="cancel()">Cancel</button>
-            <button>Update</button>
+            <button (click)="cancelClicked()">Cancel</button>
+            <button (click)="updateClicked()">Update</button>
           </div>
         </div>
         } @else {
@@ -18,7 +23,7 @@
         }
       </div>
       <div class="ml-2">
-        <button>Delete</button>
+        <button (click)="deleteClicked()">Delete</button>
       </div>
     </div>
   </form>
