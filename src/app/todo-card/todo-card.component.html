@@ -1,0 +1,25 @@
+<div>
+  <form [formGroup]="todoForm">
+    <div class="flex mb-2">
+      <div class="mr-2">
+        <input type="checkbox" name="Completed" formControlName="Completed" />
+      </div>
+      <div class="flex-grow">
+        @if (editing()) {
+        <div>
+          <textarea name="Task" formControlName="Task"></textarea>
+          <div class="dialog-buttons">
+            <button (click)="cancel()">Cancel</button>
+            <button>Update</button>
+          </div>
+        </div>
+        } @else {
+        <div class="cursor-pointer" (dblclick)="edit()">{{ todo.Task }}</div>
+        }
+      </div>
+      <div class="ml-2">
+        <button>Delete</button>
+      </div>
+    </div>
+  </form>
+</div>

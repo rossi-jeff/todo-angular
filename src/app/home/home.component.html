@@ -22,7 +22,10 @@
         [userNames]="userNames"
       ></app-random-dialog>
     </div>
-    Home Content
+    <button class="my-2">Add ToDo</button>
+    @for (todo of todos; track todo.Id) {
+    <app-todo-card [todo]="todo"></app-todo-card>
+    }
   </div>
   <app-bottom-bar></app-bottom-bar>
 </div>

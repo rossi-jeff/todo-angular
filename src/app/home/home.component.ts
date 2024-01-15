@@ -15,6 +15,7 @@ import { RandomForm } from '../../types/random-form.type';
 import { ResponseLogin } from '../../types/response-login.type';
 import { randomUser } from '../../lib/random-user';
 import { SessionData, blankSession } from '../../types/session-data.type';
+import { TodoCardComponent } from '../todo-card/todo-card.component';
 
 @Component({
   selector: 'app-home',
@@ -25,6 +26,7 @@ import { SessionData, blankSession } from '../../types/session-data.type';
     RegisterDialogComponent,
     SignInDialogComponent,
     RandomDialogComponent,
+    TodoCardComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
