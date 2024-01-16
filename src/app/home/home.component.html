@@ -25,9 +25,27 @@
         (cancel)="hideNew()"
         (addTodo)="addTodo($event)"
       ></app-new-todo-dialog>
+      @if (currentUser) {
+      <app-edit-user-dialog
+        [currentUser]="currentUser"
+        (cancel)="hideEditUser()"
+        (update)="updateUser($event)"
+      ></app-edit-user-dialog>
+      <app-change-password-dialog
+        (cancel)="hideChangePW()"
+        (changePW)="changePW($event)"
+      ></app-change-password-dialog>
+      }
     </div>
+    @if (currentUser && !currentUser.Random) {
+    <app-user-buttons
+      [currentUser]="currentUser"
+      (showEditUser)="showEditUser()"
+      (showChangePW)="showChangePW()"
+    ></app-user-buttons>
+    } @if (currentUser) {
     <button class="my-2" (click)="showNew()">Add ToDo</button>
-    @for (todo of todos; track todo.Id) {
+    } @for (todo of todos; track todo.Id) {
     <app-todo-card
       [todo]="todo"
       (deleteTodo)="deleteTodo($event)"

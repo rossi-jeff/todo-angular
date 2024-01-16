@@ -1,0 +1,21 @@
+<div class="dialog" id="edit-user-dialog">
+  <div class="dialog-header">
+    <h3>Edit User</h3>
+  </div>
+  <div class="dialog-content">
+    <form [formGroup]="userForm">
+      <div class="field">
+        <label for="UserName">User Name</label>
+        <input type="text" name="UserName" formControlName="UserName" />
+      </div>
+      <div class="field">
+        <label for="Email">Email</label>
+        <input type="email" name="Email" formControlName="Email" />
+      </div>
+    </form>
+  </div>
+  <div class="dialog-buttons">
+    <button (click)="cancelClicked()">Cancel</button>
+    <button (click)="updateClicked()">Update</button>
+  </div>
+</div>
