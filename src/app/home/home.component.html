@@ -45,13 +45,15 @@
     ></app-user-buttons>
     } @if (currentUser) {
     <button class="my-2" (click)="showNew()">Add ToDo</button>
-    } @for (todo of todos; track todo.Id) {
+    } @for (todo of todos; track todo.Id; let idx = $index) {
     <app-todo-card
       [todo]="todo"
+      [idx]="idx"
       (deleteTodo)="deleteTodo($event)"
       (updateTodo)="updateTodo($event)"
     ></app-todo-card>
     }
+    <div class="h-10"></div>
   </div>
   <app-bottom-bar></app-bottom-bar>
 </div>
