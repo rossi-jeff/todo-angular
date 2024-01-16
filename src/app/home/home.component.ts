@@ -19,6 +19,11 @@ import { TodoCardComponent } from '../todo-card/todo-card.component';
 import { TodoForm } from '../../types/todo-form.type';
 import { NewTodoDialogComponent } from '../new-todo-dialog/new-todo-dialog.component';
 import { NewTodoForm } from '../../types/new-todo-form.type';
+import { UserButtonsComponent } from '../user-buttons/user-buttons.component';
+import { EditUserDialogComponent } from '../edit-user-dialog/edit-user-dialog.component';
+import { EditUserForm } from '../../types/edit-user-form.type';
+import { ChangePasswordDialogComponent } from '../change-password-dialog/change-password-dialog.component';
+import { PassWordForm } from '../../types/pass-word-form.type';
 
 @Component({
   selector: 'app-home',
@@ -31,6 +36,9 @@ import { NewTodoForm } from '../../types/new-todo-form.type';
     RandomDialogComponent,
     TodoCardComponent,
     NewTodoDialogComponent,
+    UserButtonsComponent,
+    EditUserDialogComponent,
+    ChangePasswordDialogComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -202,6 +210,59 @@ export class HomeComponent implements OnInit {
       .subscribe(() => {
         this.hideNew();
         this.loadTodos();
+      });
+  };
+
+  showEditUser = () => {
+    this.showDialog('edit-user-dialog');
+  };
+
+  hideEditUser = () => {
+    this.hideDialog('edit-user-dialog');
+  };
+
+  updateUser = (event: EditUserForm) => {
+    const { Id, UserName, Email: email } = event;
+    if (!Id || UserName) return;
+    const Email = email || '';
+    this.api
+      .patch({
+        path: `user/${Id}`,
+        body: { UserName, Email },
+        token: this.session.Token || '',
+      })
+      .subscribe(() => {
+        this.loadCurrentUser();
+        this.hideEditUser();
+      });
+  };
+
+  showChangePW = () => {
+    this.showDialog('change-pass-word-dialog');
+  };
+
+  hideChangePW = () => {
+    this.hideDialog('change-pass-word-dialog');
+  };
+
+  changePW = (event: PassWordForm) => {
+    const { OldPassWord, NewPassWord, Confirmation } = event;
+    if (
+      !OldPassWord ||
+      !NewPassWord ||
+      !Confirmation ||
+      NewPassWord != Confirmation
+    )
+      return;
+    this.api
+      .patch({
+        path: 'user/change',
+        body: { OldPassWord, NewPassWord, Confirmation },
+        token: this.session.Token || '',
+      })
+      .subscribe(() => {
+        this.signOut();
+        this.hideChangePW();
       });
   };
 
