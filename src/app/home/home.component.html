@@ -37,7 +37,7 @@
       ></app-change-password-dialog>
       }
     </div>
-    @if (currentUser && !currentUser.Random) {
+    @if (session.SignedIn) { @if (currentUser && !currentUser.Random) {
     <app-user-buttons
       [currentUser]="currentUser"
       (showEditUser)="showEditUser()"
@@ -52,7 +52,20 @@
       (deleteTodo)="deleteTodo($event)"
       (updateTodo)="updateTodo($event)"
     ></app-todo-card>
+    } } @else {
+    <div>
+      <h2>Welcome</h2>
+      <div class="mb-4">
+        This site is a todo list application. Authentication is used so that
+        each user will only see their own todos.
+      </div>
+      <div>
+        For those who wish to avoid entering any personal information an option
+        to log in as a randomly generated user has been provided.
+      </div>
+    </div>
     }
+
     <div class="h-10"></div>
   </div>
   <app-bottom-bar></app-bottom-bar>
