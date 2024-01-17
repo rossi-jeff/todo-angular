@@ -185,9 +185,11 @@ export class HomeComponent implements OnInit {
   deleteTodo = (event: { Id?: string | null }) => {
     const { Id } = event;
     if (!Id) return;
-    this.api
-      .delete({ path: `todo/${Id}`, token: this.session.Token || '' })
-      .subscribe(() => this.loadTodos());
+    if (confirm('Are you sure?')) {
+      this.api
+        .delete({ path: `todo/${Id}`, token: this.session.Token || '' })
+        .subscribe(() => this.loadTodos());
+    }
   };
 
   showNew = () => {
