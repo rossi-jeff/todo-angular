@@ -12,6 +12,7 @@ import { TodoForm } from '../../types/todo-form.type';
 })
 export class TodoCardComponent {
   private _todo!: Todo;
+  private _idx!: number;
   todoForm = new FormGroup({
     Completed: new FormControl(false),
     Task: new FormControl(''),
@@ -31,6 +32,15 @@ export class TodoCardComponent {
       Id: this._todo.Id,
     });
   }
+  @Input()
+  get idx() {
+    return this._idx;
+  }
+  set idx(newIdx: number) {
+    this._idx = newIdx;
+    this.alternating = this._idx % 2 == 0 ? 'even' : 'odd';
+  }
+  alternating: string = 'odd';
 
   editing = signal<boolean>(false);
 
